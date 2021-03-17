@@ -8,42 +8,42 @@ import Scroll from './Scroll';
 import ErrorBoundary from './ErrorBoundary';
 
 
-// class App extends Component {
-// 	constructor() {
-// 		super()
-// 		this.state = {
-// 			robots: [],
-// 			searchfield: ''
-// 		}
-// 	}
+class App extends Component {
+	constructor() {
+		super()
+		this.state = {
+			robots: [],
+			searchfield: ''
+		}
+	}
 
 //React Hooks
 
-function App() {
+// function App() {
 
-	const [robots, setRobots] = useState([]);
-	const [searchfield, setSearchfield] = useState('');
-}
+// 	const [robots, setRobots] = useState([]);
+// 	const [searchfield, setSearchfield] = useState('');
+// }
 
-	useEffect(() => {
+	componentDidMount() {
 		fetch('https://jsonplaceholder.typicode.com/users')
 		.then(response =>response.json())
-		.then(users => {setRobots({users})});
-	}, [])
+		.then(users => {this.setState({robots: users})});
+	})
 
-	const onSearchChange = (event) => {
-		setSearchfield({event.target.value})
+	 onSearchChange = (event) => {
+		this.setState({searchfield: event.target.value})
 		
 	}
 
-	//render() {
+	render() {
 
-		const filteredRobots = robots.filter(robot =>{
-			return robot.name.toLowerCase().includes(searchfield.toLowerCase())
+		const filteredRobots = this.state.robots.filter(robot =>{
+			return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase())
 
 		})
 
-		if(robots.length === 0)
+		if(this.state.robots.length === 0)
 		{
 			return <h1>Loading . . .</h1>
 		}
@@ -51,7 +51,7 @@ function App() {
 		return (
 		<div className='tc'>
 			<h1 className='f2 grow'><span>R</span>obo<span>F</span>riends</h1>
-			<SearchBox searchChange={onSearchChange} />
+			<SearchBox searchChange={this.onSearchChange} />
 			<Scroll>
 			<ErrorBoundary>
 				<CardList robots = {filteredRobots} />
